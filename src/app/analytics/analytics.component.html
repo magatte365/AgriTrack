@@ -1,0 +1,160 @@
+<div class="app-container">
+    <!-- Sidebar (Reused from sensor component) -->
+    <div class="sidebar" [class.collapsed]="!isSidebarOpen">
+      <div class="sidebar-header">
+        <img src="../../assets/images/Black and White Monogram Logo.png" alt="AgriTrack Logo" class="logo">
+        <h3 *ngIf="isSidebarOpen">AgriTrack</h3>
+      </div>
+  
+      <nav class="sidebar-nav">
+        <ul>
+          <li *ngFor="let item of menuItems" [class.active]="activeTab === item.id">
+            <a [routerLink]="item.route" (click)="setActiveTab(item.id)">
+              <i [class]="item.icon"></i>
+              <span *ngIf="isSidebarOpen">{{item.label}}</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+  
+      <div class="sidebar-footer" *ngIf="isSidebarOpen">
+        <div class="weather-widget" (click)="openWeatherModal()">
+          <i class="bi bi-sun"></i>
+          <div class="weather-info">
+            <span>{{weatherData.temperature}}°C</span>
+            <small>{{weatherData.forecast}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="main-content" [class.expanded]="!isSidebarOpen">
+      <!-- Header (Reused from sensor component) -->
+      <header class="top-header">
+        <button class="toggle-btn" (click)="toggleSidebar()">
+          <i class="bi" [class.bi-list]="!isSidebarOpen" [class.bi-x]="isSidebarOpen"></i>
+        </button>
+        <div class="header-content">
+          <div class="search-bar">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Search for a plant..." [(ngModel)]="searchText">
+          </div>
+          <div class="header-actions">
+            <button class="btn-notification">
+              <i class="bi bi-bell"></i>
+              <span class="notification-badge">3</span>
+            </button>
+            <div class="user-profile">
+              <img src="../../assets/images/téléchargement (2).png" alt="Profile">
+              <span *ngIf="isSidebarOpen">Farmer</span>
+            </div>
+          </div>
+        </div>
+      </header>
+  
+      <!-- Main Content -->
+      <main class="content">
+        <div class="analytics-header">
+          <h2>Analysis & Assistance</h2>
+          <div class="timeframe-selector">
+            <button *ngFor="let period of timeframes" 
+                    [class.active]="selectedTimeframe === period.value"
+                    (click)="setTimeframe(period.value)">
+              {{period.label}}
+            </button>
+          </div>
+        </div>
+  
+        <div class="analytics-grid">
+          <!-- Health Status Dashboard -->
+          <div class="health-dashboard">
+            <div class="summary-cards">
+              <div class="card status-card" *ngFor="let stat of healthStats">
+                <div class="card-icon" [class]="stat.status">
+                  <i [class]="'bi ' + stat.icon"></i>
+                </div>
+                <div class="card-content">
+                  <h4>{{stat.label}}</h4>
+                  <div class="stat-value">{{stat.value}}</div>
+                  <div class="trend" [class]="stat.trend">
+                    <i [class]="'bi ' + getTrendIcon(stat.trend)"></i>
+                    <span>{{stat.change}}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="growth-chart card">
+              <div class="card-header">
+                <h3>Growth Chart</h3>
+                <div class="chart-legend">
+                  <span class="legend-item">
+                    <span class="dot actual"></span>Current Growth
+                  </span>
+                  <span class="legend-item">
+                    <span class="dot expected"></span>Expected Growth
+                  </span>
+                </div>
+              </div>
+              <div class="chart-container">
+                <canvas #growthChart></canvas>
+              </div>
+            </div>
+  
+            <div class="alerts-section card">
+              <h3>Recent Alerts</h3>
+              <div class="alert-list">
+                <div class="alert-item" *ngFor="let alert of recentAlerts" [class]="alert.severity">
+                  <i [class]="'bi ' + alert.icon"></i>
+                  <div class="alert-content">
+                    <h4>{{alert.title}}</h4>
+                    <p>{{alert.message}}</p>
+                    <small>{{alert.timestamp | date:'short'}}</small>
+                  </div>
+                  <button class="btn-action" (click)="handleAlert(alert)">
+                    <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- AI Assistant -->
+          <div class="ai-assistant card">
+            <div class="assistant-header">
+              <h3>AgriTrack Assistant</h3>
+              <button class="btn-clear" (click)="clearChat()">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+            
+            <div class="chat-container" #chatContainer>
+              <div class="chat-messages" *ngFor="let message of chatMessages">
+                <div class="message" [class.user-message]="message.type === 'user'"
+                     [class.assistant-message]="message.type === 'assistant'">
+                  <div class="message-avatar">
+                    <i [class]="message.type === 'user' ? 'bi bi-person' : 'bi bi-robot'"></i>
+                  </div>
+                  <div class="message-content">
+                    <p [innerHTML]="message.text"></p>
+                    <small>{{message.timestamp | date:'shortTime'}}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="chat-input">
+              <input type="text" 
+                     placeholder="Ask your question..."
+                     [(ngModel)]="currentMessage"
+                     (keyup.enter)="sendMessage()">
+              <button class="btn-send" (click)="sendMessage()"
+                      [disabled]="!currentMessage.trim()">
+                <i class="bi bi-send"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>

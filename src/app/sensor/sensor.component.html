@@ -1,0 +1,168 @@
+<div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar" [class.collapsed]="!isSidebarOpen">
+      <div class="sidebar-header">
+        <img src="../../assets/images/Black and White Monogram Logo.png" alt="AgriTrack Logo" class="logo">
+        <h3 *ngIf="isSidebarOpen">AgriTrack</h3>
+      </div>
+  
+      <nav class="sidebar-nav">
+        <ul>
+          <li *ngFor="let item of menuItems" [class.active]="activeTab === item.id">
+            <a [routerLink]="item.route" (click)="setActiveTab(item.id)">
+              <i [class]="item.icon"></i>
+              <span *ngIf="isSidebarOpen">{{item.label}}</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+  
+      <div class="sidebar-footer" *ngIf="isSidebarOpen">
+        <div class="weather-widget">
+          <i class="bi bi-sun"></i>
+          <div class="weather-info">
+            <span>{{weatherData.temperature}}°C</span>
+            <small>{{weatherData.forecast}}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="main-content" [class.expanded]="!isSidebarOpen">
+      <!-- Header -->
+      <header class="top-header">
+        <button class="toggle-btn" (click)="toggleSidebar()">
+          <i class="bi" [class.bi-list]="!isSidebarOpen" [class.bi-x]="isSidebarOpen"></i>
+        </button>
+        <div class="header-content">
+          <div class="search-bar">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Search..." [(ngModel)]="searchText">
+          </div>
+          <div class="header-actions">
+            <button class="btn-notification">
+              <i class="bi bi-bell"></i>
+              <span class="notification-badge">3</span>
+            </button>
+            <div class="user-profile">
+              <img src="../../assets/images/téléchargement (2).png" alt="Profile">
+              <span *ngIf="isSidebarOpen">Farmer</span>
+            </div>
+          </div>
+        </div>
+      </header>
+  
+      <!-- Main Content -->
+      <main class="content">
+        <div class="sensors-header">
+          <h2>Sensor Management</h2>
+          <div class="filters">
+            <select [(ngModel)]="filterType" class="form-select">
+              <option value="all">All Types</option>
+              <option value="temperature">Temperature</option>
+              <option value="humidity">Humidity</option>
+              <option value="soil">Soil</option>
+              <option value="light">Light</option>
+              <option value="pH">pH</option>
+            </select>
+            <select [(ngModel)]="filterStatus" class="form-select">
+              <option value="all">All Statuses</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="error">Error</option>
+            </select>
+          </div>
+        </div>
+  
+        <div class="sensors-grid">
+          <div class="sensors-list">
+            <div class="card sensor-card" *ngFor="let sensor of getFilteredSensors()" 
+                 (click)="selectSensor(sensor)">
+              <div class="card-body">
+                <div class="sensor-header">
+                  <div class="sensor-icon">
+                    <i [class]="'bi ' + getTypeIcon(sensor.type)"></i>
+                  </div>
+                  <div class="sensor-info">
+                    <h4>{{sensor.name}}</h4>
+                    <span [class]="'status-badge ' + getStatusClass(sensor.status)">
+                      {{sensor.status}}
+                    </span>
+                  </div>
+                </div>
+  
+                <div class="sensor-details">
+                  <p><i class="bi bi-geo-alt"></i> {{sensor.location}}</p>
+                  <p><i class="bi bi-info-circle"></i> {{sensor.model}}</p>
+                  <div class="last-reading">
+                    <span class="reading-value">{{sensor.lastReading.value}}{{sensor.lastReading.unit}}</span>
+                    <small class="reading-time">
+                      {{sensor.lastReading.timestamp | date:'short'}}
+                    </small>
+                  </div>
+                </div>
+  
+                <div class="sensor-footer">
+                  <div class="battery-level">
+                    <i class="bi bi-battery"></i>
+                    <div class="progress">
+                      <div class="progress-bar" 
+                           [style.width.%]="sensor.batteryLevel"
+                           [class.bg-success]="sensor.batteryLevel > 60"
+                           [class.bg-warning]="sensor.batteryLevel <= 60 && sensor.batteryLevel > 20"
+                           [class.bg-danger]="sensor.batteryLevel <= 20">
+                        {{sensor.batteryLevel}}%
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Detailed Sensor View -->
+          <div class="sensor-details-panel" *ngIf="selectedSensor">
+            <div class="card">
+              <div class="card-header">
+                <h3>Sensor Details</h3>
+                <button class="btn-close" (click)="selectedSensor = null"></button>
+              </div>
+              <div class="card-body">
+                <div class="details-section">
+                  <h4>General Information</h4>
+                  <div class="details-grid">
+                    <div class="detail-item">
+                      <label>Model</label>
+                      <span>{{selectedSensor.model}}</span>
+                    </div>
+                    <div class="detail-item">
+                      <label>Installation Date</label>
+                      <span>{{selectedSensor.installationDate | date}}</span>
+                    </div>
+                    <div class="detail-item">
+                      <label>Location</label>
+                      <span>{{selectedSensor.location}}</span>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="details-section">
+                  <h4>Maintenance History</h4>
+                  <div class="maintenance-history">
+                    <div class="history-item" *ngFor="let maintenance of selectedSensor.maintenanceHistory">
+                      <div class="history-date">{{maintenance.date | date}}</div>
+                      <div class="history-details">
+                        <p class="action">{{maintenance.action}}</p>
+                        <p class="technician">By: {{maintenance.technician}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>

@@ -1,0 +1,189 @@
+<div class="app-container">
+    <!-- Sidebar - Same structure as home.component.html -->
+    <div class="sidebar" [class.collapsed]="!isSidebarOpen">
+        <div class="sidebar-header">
+          <img src="../../assets/images/Black and White Monogram Logo.png" alt="AgriTrack Logo" class="logo">
+          <h3 *ngIf="isSidebarOpen">AgriTrack</h3>
+        </div>
+    
+        <nav class="sidebar-nav">
+          <ul>
+            <li *ngFor="let item of menuItems" [class.active]="activeTab === item.id">
+              <a [routerLink]="item.route" (click)="setActiveTab(item.id)">
+                <i [class]="item.icon"></i>
+                <span *ngIf="isSidebarOpen">{{item.label}}</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+    
+        <div class="sidebar-footer" *ngIf="isSidebarOpen">
+          <div class="weather-widget">
+            <i class="bi bi-sun"></i>
+            <div class="weather-info">
+              <span>{{weatherData.temperature}}°C</span>
+              <small>{{weatherData.forecast}}</small>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="main-content" [class.expanded]="!isSidebarOpen">
+      
+        <header class="top-header">
+            <button class="toggle-btn" (click)="toggleSidebar()">
+              <i class="bi" [class.bi-list]="!isSidebarOpen" [class.bi-x]="isSidebarOpen"></i>
+            </button>
+            <div class="header-content">
+              <div class="search-bar">
+                <i class="bi bi-search"></i>
+                <input type="text" placeholder="Search...">
+              </div>
+              <div class="header-actions">
+                <button class="btn-notification">
+                  <i class="bi bi-bell"></i>
+                  <span class="notification-badge">3</span>
+                </button>
+                <div class="user-profile">
+                    <img src="../../assets/images/téléchargement (2).png" alt="Profile">
+                    <span *ngIf="isSidebarOpen">Farmer</span>
+                  </div>
+              </div>
+            </div>
+          </header>
+  
+      <main class="content">
+        <!-- Page Header -->
+        <div class="page-header">
+          <h2>Crop Monitoring</h2>
+          <div class="view-toggle">
+            <button class="btn" [class.btn-primary]="selectedView === 'grid'" 
+                    (click)="toggleView('grid')">
+              <i class="bi bi-grid"></i> Grid View
+            </button>
+            <button class="btn" [class.btn-primary]="selectedView === 'calendar'" 
+                    (click)="toggleView('calendar')">
+              <i class="bi bi-calendar3"></i> Calendar
+            </button>
+          </div>
+        </div>
+  
+        <!-- Grid View -->
+        <div class="plants-grid" *ngIf="selectedView === 'grid'">
+          <div class="plant-cards">
+            <div class="card plant-card" *ngFor="let plant of plants" 
+                 (click)="selectPlant(plant)">
+              <div class="card-body">
+                <div class="plant-header">
+                  <h4 class="card-title">{{plant.name}}</h4>
+                  <span [class]="'health-status ' + plant.healthStatus.toLowerCase()">
+                    {{plant.healthStatus}}
+                  </span>
+                </div>
+                
+                <div class="plant-info">
+                  <p><i class="bi bi-tree"></i> {{plant.species}}</p>
+                  <p><i class="bi bi-calendar"></i> Planted on: {{plant.plantingDate | date}}</p>
+                  <p><i class="bi bi-calendar-check"></i> Expected Harvest: {{plant.expectedHarvestDate | date}}</p>
+                </div>
+  
+                <div class="progress-section">
+                  <div class="progress-label">
+                    <span>Progress</span>
+                    <span>{{getPlantProgress(plant)}}%</span>
+                  </div>
+                  <div class="progress">
+                    <div class="progress-bar bg-success" 
+                         [style.width]="getPlantProgress(plant) + '%'"></div>
+                  </div>
+                </div>
+  
+                <div class="plant-stats">
+                  <div class="stat-item">
+                    <i class="bi bi-thermometer-half"></i>
+                    <span>{{plant.optimalTemp}}</span>
+                  </div>
+                  <div class="stat-item">
+                    <i class="bi bi-droplet"></i>
+                    <span>{{plant.optimalHumidity}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Selected Plant Details -->
+          <div class="plant-details" *ngIf="selectedPlant">
+            <div class="card">
+              <div class="card-header">
+                <h3>Details of {{selectedPlant.name}}</h3>
+                <button class="btn-close" (click)="selectedPlant = null"></button>
+              </div>
+              <div class="card-body">
+                <div class="details-grid">
+                  <div class="detail-item">
+                    <label>Current Stage</label>
+                    <span>{{selectedPlant.currentStage}}</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>Last Maintenance</label>
+                    <span>{{selectedPlant.lastMaintenance | date}}</span>
+                  </div>
+                  <div class="detail-item">
+                    <label>Notes</label>
+                    <p>{{selectedPlant.notes}}</p>
+                  </div>
+                </div>
+  
+                <div class="maintenance-tasks">
+                  <h4>Maintenance Tasks</h4>
+                  <div class="task-list">
+                    <div class="task-item" *ngFor="let task of getMaintenanceTasks(selectedPlant.id)">
+                      <div class="task-header">
+                        <span class="task-name">{{task.taskName}}</span>
+                        <span class="task-date">{{task.dueDate | date}}</span>
+                      </div>
+                      <p class="task-description">{{task.description}}</p>
+                      <div class="task-actions">
+                        <span [class]="'priority-badge priority-' + task.priority">
+                          {{task.priority}}
+                        </span>
+                        <select [(ngModel)]="task.status" 
+                                (change)="updateTaskStatus(task, task.status)"
+                                [class]="'status-' + task.status">
+                          <option value="pending">Pending</option>
+                          <option value="completed">Completed</option>
+                          <option value="overdue">Overdue</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Calendar View -->
+        <div class="calendar-view" *ngIf="selectedView === 'calendar'">
+            <div class="calendar-container">
+              <div class="calendar-legend">
+                <div class="legend-item">
+                  <span class="priority-dot priority-high"></span>
+                  High Priority
+                </div>
+                <div class="legend-item">
+                  <span class="priority-dot priority-medium"></span>
+                  Medium Priority
+                </div>
+                <div class="legend-item">
+                  <span class="priority-dot priority-low"></span>
+                  Low Priority
+                </div>
+              </div>
+              <full-calendar [options]="calendarOptions"></full-calendar>
+            </div>
+          </div>
+      </main>
+    </div>
+</div>

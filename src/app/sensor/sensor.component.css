@@ -1,0 +1,900 @@
+/* home.component.css */
+.app-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  
+  .sidebar {
+    width: 250px;
+    background: #1a472a;
+    color: white;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebar.collapsed {
+    width: 70px;
+  }
+  
+  .sidebar-header {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .sidebar-nav a {
+    color: white; /* Texte blanc */
+    text-decoration: none; 
+  }
+  
+  .sidebar-nav i {
+    color: white; /* Icônes blanches */
+  }
+  
+  .sidebar-nav span {
+    color: white; /* Texte blanc */
+  }
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .sidebar-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar-nav li {
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+  }
+  
+  .sidebar-nav li:hover {
+    background-color: #2c5a3f;
+  }
+  
+  .sidebar-nav li.active {
+    background-color: #2c5a3f;
+    border-left: 4px solid #8bc34a;
+  }
+  
+  .sidebar-nav i {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+  }
+  
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 1rem;
+    border-top: 1px solid #2c5a3f;
+  }
+  
+  /* Main Content Styles */
+  .main-content {
+    flex: 1;
+    background: #f5f5f5;
+    transition: all 0.3s ease;
+  }
+  
+  .top-header {
+    background: white;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .toggle-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #1a472a;
+    padding: 0.5rem;
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-left: 1rem;
+  }
+  
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background: #f5f5f5;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    width: 300px;
+  }
+  
+  .search-bar input {
+    border: none;
+    background: none;
+    margin-left: 0.5rem;
+    width: 100%;
+    outline: none;
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .btn-notification {
+    position: relative;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  .notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff4444;
+    color: white;
+    border-radius: 50%;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+  }
+  
+  .user-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .content {
+    padding: 2rem;
+  }
+  
+  /* Weather Widget */
+  .weather-widget {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255,255,255,0.1);
+    padding: 0.8rem;
+    border-radius: 10px;
+  }
+  
+  .weather-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .sidebar-nav li, .content {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .overview-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .overview-cards .card {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+  }
+  
+  .overview-cards .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card-value {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0.5rem 0;
+  }
+  
+  .charts-container {
+    margin-bottom: 2rem;
+  }
+  
+  .chart-tabs {
+    margin-bottom: 1rem;
+  }
+  
+  .chart-area {
+    height: 300px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  
+  .plants-status {
+    margin-bottom: 2rem;
+  }
+  
+  .plants-status .table {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .progress {
+    height: 20px;
+    border-radius: 10px;
+  }
+  
+  .progress-bar {
+    transition: width 0.3s ease-in-out;
+  }
+  
+  .recent-alerts {
+    margin-bottom: 2rem;
+  }
+  
+  .alert-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .alert {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .alert-message {
+    flex: 1;
+  }
+  
+  .alert-time {
+    color: #6c757d;
+  }
+  
+  /* Animation pour les cartes */
+  .overview-cards .card {
+    animation: slideIn 0.5s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Styles spécifiques au suivi des plantes */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .view-toggle {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .plants-grid {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
+  }
+  
+  .plant-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .plant-card {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .plant-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  
+  .plant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .health-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+  }
+  
+  .health-status.excellent {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .health-status.bon {
+    background-color: #17a2b8;
+    color: white;
+  }
+  
+  .health-status.moyen {
+    background-color: #ffc107;
+    color: black;
+  }
+  
+  .plant-info {
+    margin-bottom: 1rem;
+  }
+  
+  .plant-info p {
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .progress-section {
+    margin: 1rem 0;
+  }
+  
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+  
+  .plant-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+  }
+  
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .plant-details {
+    position: sticky;
+    top: 1rem;
+  }
+  
+  .details-grid {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .detail-item label {
+    font-weight: 500;
+    color: #666;
+  }
+  
+  .maintenance-tasks {
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+  }
+  
+  .task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .task-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem;
+    transition: background-color 0.2s;
+  }
+  
+  .task-item:hover {
+    background: #e9ecef;
+  }
+  
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+  
+  .task-name {
+    font-weight: 500;
+  }
+  
+  .task-date {
+    color: #666;
+    font-size: 0.875rem;
+  }
+  
+  .task-description {
+    color: #666;
+    margin-bottom: 1rem;
+  }
+  
+  .task-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .priority-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    text-transform: capitalize;
+  }
+  
+  .priority-high {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .priority-medium {
+    background-color: #ffc107;
+    color: black;
+  }
+  
+  .priority-low {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  select.status-pending {
+    border-color: #ffc107;
+  }
+  
+  select.status-completed {
+    border-color: #28a745;
+  }
+  
+  select.status-overdue {
+    border-color: #dc3545;
+  }
+  
+  /* Styles pour la vue calendrier */
+  .calendar-view {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  /* Styles pour les événements du calendrier */
+  .fc-event {
+    padding: 0.25rem 0.5rem;
+    border: none !important;
+  }
+  
+  .fc-event.priority-high {
+    background-color: rgba(220, 53, 69, 0.9) !important;
+  }
+  
+  .fc-event.priority-medium {
+    background-color: rgba(255, 193, 7, 0.9) !important;
+  }
+  
+  .fc-event.priority-low {
+    background-color: rgba(40, 167, 69, 0.9) !important;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .plant-card, .plant-details, .task-item {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    .plants-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .plant-details {
+      position: static;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .plant-cards {
+      grid-template-columns: 1fr;
+    }
+  
+    .page-header {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+
+
+/* Réutilisation des styles de base du composant plant-tracking */
+.app-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background: #1a472a;
+    color: white;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Styles spécifiques aux capteurs */
+  .sensors-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+  
+  .filters {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .form-select {
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: white;
+  }
+  
+  .sensors-grid {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
+  }
+  
+  .sensors-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .sensor-card {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .sensor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  }
+  
+  .sensor-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .sensor-icon {
+    width: 50px;
+    height: 50px;
+    background: #f8f9fa;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+  
+  .sensor-info {
+    flex: 1;
+  }
+  
+  .sensor-info h4 {
+    margin: 0;
+    color: #333;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .status-active {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .status-inactive {
+    background-color: #6c757d;
+    color: white;
+}
+
+.status-maintenance {
+  background-color: #ffc107;
+  color: black;
+}
+
+.status-error {
+  background-color: #dc3545;
+  color: white;
+}
+
+.sensor-details {
+  margin: 1rem 0;
+}
+
+.sensor-details p {
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #666;
+}
+
+.sensor-details i {
+  color: #1a472a;
+}
+
+.last-reading {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.reading-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1a472a;
+  display: block;
+}
+
+.reading-time {
+  color: #666;
+}
+
+.sensor-footer {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.battery-level {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.battery-level i {
+  color: #1a472a;
+}
+
+.battery-level .progress {
+  flex: 1;
+  height: 0.5rem;
+  background: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.battery-level .progress-bar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.75rem;
+  transition: width 0.3s ease;
+}
+
+/* Detailed Sensor Panel */
+.sensor-details-panel {
+  position: sticky;
+  top: 1rem;
+}
+
+.sensor-details-panel .card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.sensor-details-panel .card-header {
+  background: none;
+  border-bottom: 1px solid #eee;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.details-section {
+  margin-bottom: 2rem;
+}
+
+.details-section h4 {
+  color: #1a472a;
+  margin-bottom: 1rem;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail-item label {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.maintenance-history {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.history-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.history-date {
+  min-width: 100px;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.history-details {
+  flex: 1;
+}
+
+.history-details p {
+  margin: 0;
+}
+
+.history-details .action {
+  font-weight: 500;
+  color: #1a472a;
+}
+
+.history-details .technician {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sensor-card, .sensor-details-panel {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .sensors-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sensor-details-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .sensors-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .filters {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .sensors-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dark mode styles for the sensors */
+@media (prefers-color-scheme: dark) {
+  .sensor-card {
+    background: #2d2d2d;
+  }
+
+  .sensor-info h4 {
+    color: #fff;
+  }
+
+  .sensor-details p {
+    color: #bbb;
+  }
+
+  .last-reading {
+    background: #333;
+  }
+
+  .reading-value {
+    color: #8bc34a;
+  }
+
+  .reading-time {
+    color: #bbb;
+  }
+
+  .details-section h4 {
+    color: #8bc34a;
+  }
+
+  .history-item {
+    background: #333;
+  }
+
+  .history-details .action {
+    color: #8bc34a;
+  }
+}

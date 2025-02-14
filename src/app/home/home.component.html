@@ -1,0 +1,213 @@
+<!-- home.component.html -->
+<div class="app-container">
+  <!-- Sidebar -->
+  <div class="sidebar" [class.collapsed]="!isSidebarOpen">
+    <div class="sidebar-header">
+      <img src="../../assets/images/Black and White Monogram Logo.png" alt="AgriTrack Logo" class="logo">
+      <h3 *ngIf="isSidebarOpen">AgriTrack</h3>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul>
+        <li *ngFor="let item of menuItems" 
+      [class.active]="activeTab === item.id">
+    <a [routerLink]="item.route" (click)="setActiveTab(item.id)">
+      <i [class]="item.icon"></i>
+      <span *ngIf="isSidebarOpen">{{item.label}}</span>
+    </a>
+  </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar-footer" *ngIf="isSidebarOpen">
+      <div class="weather-widget">
+        <i class="bi bi-sun"></i>
+        <div class="weather-info">
+          <span>{{weatherData.temperature}}°C</span>
+          <small>{{weatherData.forecast}}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content" [class.expanded]="!isSidebarOpen">
+    <header class="top-header">
+      <button class="toggle-btn" (click)="toggleSidebar()">
+        <i class="bi" [class.bi-list]="!isSidebarOpen" [class.bi-x]="isSidebarOpen"></i>
+      </button>
+      <div class="header-content">
+        <div class="search-bar">
+          <i class="bi bi-search"></i>
+          <input type="text" placeholder="Search...">
+        </div>
+        <div class="header-actions">
+          <button class="btn-notification">
+            <i class="bi bi-bell"></i>
+            <span class="notification-badge">3</span>
+          </button>
+          <div class="user-profile">
+            <img src="../../assets/images/téléchargement (2).png" alt="Profile">
+            <span *ngIf="isSidebarOpen">Farmer</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div *ngIf="activeTab === 'dashboard'">
+        <!-- Overview -->
+        <div class="overview-cards">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <i class="bi bi-thermometer-half text-danger"></i>
+                Average Temperature
+              </h5>
+              <p class="card-value">26.5°C</p>
+              <small class="text-muted">+2°C since yesterday</small>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <i class="bi bi-droplet text-primary"></i>
+                Average Humidity
+              </h5>
+              <p class="card-value">61.5%</p>
+              <small class="text-muted">-3% since yesterday</small>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <i class="bi bi-clock text-success"></i>
+                Next Watering
+              </h5>
+              <p class="card-value">2h 30m</p>
+              <small class="text-muted">Tomato Plot</small>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <i class="bi bi-check-circle text-success"></i>
+                Global Status
+              </h5>
+              <p class="card-value">Optimal</p>
+              <small class="text-muted">All plots</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-container">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">24h Evolution</h5>
+              <div class="chart-tabs mb-3">
+                <button class="btn btn-sm me-2" 
+                        [class.btn-primary]="selectedChart === 'temperature'"
+                        [class.btn-outline-primary]="selectedChart !== 'temperature'"
+                        (click)="toggleChart('temperature')">
+                  <i class="bi bi-thermometer-half"></i>
+                  Temperature
+                </button>
+                <button class="btn btn-sm" 
+                        [class.btn-primary]="selectedChart === 'humidity'"
+                        [class.btn-outline-primary]="selectedChart !== 'humidity'"
+                        (click)="toggleChart('humidity')">
+                  <i class="bi bi-droplet"></i>
+                  Humidity
+                </button>
+              </div>
+              <div class="chart-area">
+                <ngx-charts-line-chart
+                  [view]="view"
+                  [scheme]="colorScheme"
+                  [results]="selectedChart === 'temperature' ? temperatureChartData : humidityChartData"
+                  [gradient]="true"
+                  [legend]="legend"
+                  [xAxis]="xAxis"
+                  [yAxis]="yAxis"
+                  [timeline]="timeline"
+                  [showXAxisLabel]="showXAxisLabel"
+                  [showYAxisLabel]="showYAxisLabel"
+                  [xAxisLabel]="xAxisLabel"
+                  [yAxisLabel]="yAxisLabel"
+                  [animations]="animations">
+                </ngx-charts-line-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plots Status -->
+        <div class="plants-status">
+          <h4>Plots Status</h4>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Plot</th>
+                  <th>Humidity</th>
+                  <th>Temperature</th>
+                  <th>Last Watering</th>
+                  <th>Next Watering</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let plant of plantsData">
+                  <td>{{plant.name}}</td>
+                  <td>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar"
+                           [style.width]="plant.humidity + '%'"
+                           [class.bg-success]="plant.humidity >= 60"
+                           [class.bg-warning]="plant.humidity < 60 && plant.humidity >= 40"
+                           [class.bg-danger]="plant.humidity < 40">
+                        {{plant.humidity}}%
+                      </div>
+                    </div>
+                  </td>
+                  <td>{{plant.temperature}}°C</td>
+                  <td>{{plant.lastWatering | date:'HH:mm'}}</td>
+                  <td>in {{getTimeUntilWatering(plant.nextWateringDue)}}</td>
+                  <td>
+                    <span [class]="getHealthClass(plant.health)">
+                      <i class="bi bi-circle-fill"></i>
+                      {{plant.health}}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Recent Alerts -->
+        <div class="recent-alerts">
+          <h4>Recent Alerts</h4>
+          <div class="alert-list">
+            <div *ngFor="let alert of recentAlerts" 
+                 class="alert" 
+                 [class.alert-warning]="alert.type === 'warning'"
+                 [class.alert-info]="alert.type === 'info'"
+                 [class.alert-success]="alert.type === 'success'">
+              <i class="bi" 
+                 [class.bi-exclamation-triangle]="alert.type === 'warning'"
+                 [class.bi-info-circle]="alert.type === 'info'"
+                 [class.bi-check-circle]="alert.type === 'success'"></i>
+              <span class="alert-message">{{alert.message}}</span>
+              <small class="alert-time">{{alert.time}}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
